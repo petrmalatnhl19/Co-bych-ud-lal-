@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17132d">
+<title>CO BYS UDĚLAL?</title>
+<style>
+:root {
+  --bg:#100d20;
+  --panel:#1d1833;
+  --panel2:#292143;
+  --pink:#ff4fa3;
+  --cyan:#48e5df;
+  --text:#f8f5ff;
+  --muted:#aaa3c4;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 10% 0%,#382052 0,transparent 38%),
+    radial-gradient(circle at 100% 30%,#123c4a 0,transparent 32%),
+    var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,sans-serif;
+}
+header {
+  padding:22px 18px 12px;
+  max-width:650px;
+  margin:auto;
+}
+.logo {
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:var(--cyan);
+}
+.logo span { color:var(--pink); }
+main {
+  max-width:650px;
+  margin:auto;
+  padding:12px 16px 35px;
+}
+.topline {
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+h1 {
+  font-size:clamp(35px,9vw,54px);
+  line-height:1.02;
+  margin:22px 0 12px;
+  letter-spacing:-2px;
+}
+h1 em {
+  color:var(--pink);
+  font-style:normal;
+}
+.intro {
+  color:var(--muted);
+  line-height:1.55;
+  margin-bottom:26px;
+}
+.card {
+  background:linear-gradient(145deg,#28203f,#19152b);
+  border:1px solid #44365f;
+  border-radius:25px;
+  padding:21px;
+  box-shadow:0 18px 50px #0005;
+}
+.tag {
+  display:inline-block;
+  color:var(--cyan);
+  background:#48e5df18;
+  border:1px solid #48e5df55;
+  padding:7px 11px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+.question {
+  font-size:25px;
+  line-height:1.25;
+  font-weight:850;
+  margin:18px 0 23px;
+}
+.choice {
+  display:block;
+  width:100%;
+  padding:18px;
+  margin:12px 0;
+  border-radius:16px;
+  border:1px solid #594b78;
+  background:#302747;
+  color:white;
+  text-align:left;
+  font-size:17px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
+.choice:first-of-type { border-left:5px solid var(--pink); }
+.choice:last-of-type { border-left:5px solid var(--cyan); }
+.choice:active { transform:scale(.98); }
+.choice:disabled { cursor:default; opacity:.85; }
+.choice small {
+  display:block;
+  margin-top:7px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+}
+.results {
+  display:none;
+  margin-top:20px;
+  padding-top:18px;
+  border-top:1px solid #ffffff20;
+}
+.results h3 { margin:0 0 15px; }
+.result-row { margin:13px 0; }
+.result-label {
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-bottom:7px;
+}
+.bar {
+  height:12px;
+  border-radius:20px;
+  background:#ffffff16;
+  overflow:hidden;
+}
+.fill {
+  height:100%;
+  width:50%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--pink),#ff9aaf);
+}
+.fill.b { background:linear-gradient(90deg,var(--cyan),#8cfff2); }
+.actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:17px;
+}
+.action {
+  padding:14px 10px;
+  border-radius:13px;
+  border:1px solid #ffffff25;
+  background:#ffffff0c;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+.action.primary {
+  background:linear-gradient(100deg,#ff429d,#a83fff);
+  border:0;
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:17px 0;
+}
+.stat {
+  text-align:center;
+  background:#ffffff0b;
+  border:1px solid #ffffff17;
+  border-radius:16px;
+  padding:14px 5px;
+}
+.stat strong {
+  display:block;
+  font-size:24px;
+  color:var(--cyan);
+}
+.stat span {
+  font-size:10px;
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:.6px;
+}
+.info {
+  margin-top:17px;
+  padding:18px;
+  border-radius:18px;
+  background:#ffffff09;
+  border:1px solid #ffffff15;
+}
+.info h3 { margin:0 0 8px; }
+.info p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+  margin:0;
+}
+footer {
+  text-align:center;
+  color:#77718e;
+  font-size:11px;
+  padding:22px;
+}
+.notice {
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+  margin-top:13px;
+}
+@media(max-width:390px) {
+  .stats { gap:6px; }
+  .stat { padding:12px 3px; }
+  .stat strong { font-size:21px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CO BYS <span>UDĚLAL?</span></div>
+</header>
+
+<main>
+  <div class="topline">
+    <span>⚡ DENNÍ SOUBOJ</span>
+    <span id="counter">DILEMA 01 / 10</span>
+  </div>
+
+  <h1>Rozhodni se.<br><em>Ukaž svůj názor.</em></h1>
+  <p class="intro">
+    Žádné správné odpovědi. Jen tvoje volba.
+    Hlasuj, porovnej se s ostatními a pošli dilema dál.
+  </p>
+
+  <section class="card">
+    <span class="tag">🔥 DNEŠNÍ DILEMA</span>
+    <div class="question" id="question">Načítám dilema...</div>
+
+    <button class="choice" id="choiceA" onclick="vote(0)">
+      Možnost A
+      <small>Vyber tuto možnost</small>
+    </button>
+
+    <button class="choice" id="choiceB" onclick="vote(1)">
+      Možnost B
+      <small>Vyber tuto možnost</small>
+    </button>
+
+    <div class="results" id="results">
+      <h3>📊 Výsledky hlasování</h3>
+      <div class="result-row">
+        <div class="result-label">
+          <span id="labelA">Možnost A</span>
+          <strong id="percentA">50 %</strong>
+        </div>
+        <div class="bar"><div class="fill" id="barA"></div></div>
+      </div>
+      <div class="result-row">
+        <div class="result-label">
+          <span id="labelB">Možnost B</span>
+          <strong id="percentB">50 %</strong>
+        </div>
+        <div class="bar"><div class="fill b" id="barB"></div></div>
+      </div>
+      <p class="notice" id="voteMessage"></p>
+    </div>
+
+    <div class="actions">
+      <button class="action" onclick="share()">↗ Sdílet dilema</button>
+      <button class="action primary" onclick="nextQuestion()">Další dilema →</button>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="streak">0</strong>
+      <span>🔥 SÉRIE DNÍ</span>
+    </div>
+    <div class="stat">
+      <strong id="points">0</strong>
+      <span>🏆 BODY</span>
+    </div>
+    <div class="stat">
+      <strong id="votes">0</strong>
+      <span>🎮 HLASY</span>
+    </div>
+  </div>
+
+  <section class="info">
+    <h3>🎮 Jak se hraje?</h3>
+    <p>
+      Vyber jednu ze dvou možností. Uvidíš výsledky svého
+      hlasování a můžeš dilema sdílet s kamarády.
+      Každý den tě čeká nová výzva.
+    </p>
+  </section>
+  <p class="notice">Tvoje statistiky se ukládají v tomto zařízení.</p>
+</main>
+
+<footer>CO BYS UDĚLAL? · VERZE 0.2</footer>
+
+<script>
+const dilemmas = [
+  ["Raději bys uměl létat, nebo se teleportovat?",
+   "Umět létat","Umět se teleportovat"],
+  ["Měl bys raději neomezené peníze, nebo neomezený čas?",
+   "Neomezené peníze","Neomezený čas"],
+  ["Žil bys raději u moře, nebo v horách?",
+   "U moře","V horách"],
+  ["Raději bys poznal budoucnost, nebo mohl změnit minulost?",
+   "Poznat budoucnost","Změnit minulost"],
+  ["Měl bys raději vlastního draka, nebo robota?",
+   "Vlastního draka","Vlastního robota"],
+  ["Raději bys cestoval do vesmíru, nebo do minulosti?",
+   "Do vesmíru","Do minulosti"],
+  ["Dokázal bys raději mluvit se zvířaty, nebo všemi lidmi jejich jazykem?",
+   "Mluvit se zvířaty","Rozumět všem jazykům"],
+  ["Raději bys žil bez internetu, nebo bez televize?",
+   "Bez internetu","Bez televize"],
+  ["Měl bys raději superrychlost, nebo neviditelnost?",
+   "Superrychlost","Neviditelnost"],
+  ["Raději bys objevil nový ostrov, nebo novou planetu?",
+   "Nový ostrov","Novou planetu"]
+];
+
+let current = 0;
+let selected = {};
+let localVotes = JSON.parse(localStorage.getItem("cbu_votes") || "{}");
+let points = Number(localStorage.getItem("cbu_points") || 0);
+let streak = Number(localStorage.getItem("cbu_streak") || 0);
+let lastDay = localStorage.getItem("cbu_day") || "";
+
+function save() {
+  localStorage.setItem("cbu_votes", JSON.stringify(localVotes));
+  localStorage.setItem("cbu_points", points);
+  localStorage.setItem("cbu_streak", streak);
+  localStorage.setItem("cbu_day", lastDay);
+}
+
+function loadQuestion() {
+  const d = dilemmas[current];
+  document.getElementById("counter").textContent =
+    `DILEMA ${String(current+1).padStart(2,"0")} / ${dilemmas.length}`;
+  document.getElementById("question").textContent = d[0];
+
+  const a = document.getElementById("choiceA");
+  const b = document.getElementById("choiceB");
+  a.innerHTML = d[1] + "<small>Vyber tuto možnost</small>";
+  b.innerHTML = d[2] + "<small>Vyber tuto možnost</small>";
+
+  a.disabled = false;
+  b.disabled = false;
+  document.getElementById("results").style.display = "none";
+
+  if (selected[current] !== undefined) {
+    showResults();
+  }
+}
+
+function vote(choice) {
+  if (selected[current] !== undefined) return;
+
+  selected[current] = choice;
+  localVotes[current] = localVotes[current] || [0,0];
+  localVotes[current][choice]++;
+
+  const today = new Date().toLocaleDateString("sv-SE");
+  if (lastDay !== today) {
+    streak = lastDay ? streak + 1 : 1;
+    lastDay = today;
+  }
+
+  points += 10;
+  save();
+  updateStats();
+  showResults();
+}
+
+function showResults() {
+  const d = dilemmas[current];
+  const counts = localVotes[current] || [0,0];
+  const total = counts[0] + counts[1];
+  const a = total ? Math.round(counts[0] / total * 100) : 50;
+  const b = 100 - a;
+
+  document.getElementById("choiceA").disabled = true;
+  document.getElementById("choiceB").disabled = true;
+
+  document.getElementById("labelA").textContent = d[1];
+  document.getElementById("labelB").textContent = d[2];
+  document.getElementById("percentA").textContent = a + " %";
+  document.getElementById("percentB").textContent = b + " %";
+  document.getElementById("barA").style.width = a + "%";
+  document.getElementById("barB").style.width = b + "%";
+
+  document.getElementById("voteMessage").textContent =
+    "Tvoje volba: " + d[selected[current] + 1] +
+    ". Zatím " + total + " hlasů v tomto zařízení.";
+
+  document.getElementById("results").style.display = "block";
+}
+
+function nextQuestion() {
+  current = (current + 1) % dilemmas.length;
+  loadQuestion();
+}
+
+function updateStats() {
+  document.getElementById("points").textContent = points;
+  document.getElementById("streak").textContent = streak;
+  document.getElementById("votes").textContent =
+    Object.keys(selected).length;
+}
+
+async function share() {
+  const d = dilemmas[current];
+  const message = "CO BYS UDĚLAL?\n" + d[0] +
+    "\nA) " + d[1] + "\nB) " + d[2];
+
+  if (navigator.share) {
+    try {
+      await navigator.share({title:"CO BYS UDĚLAL?", text:message});
+    } catch(e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(message);
+      alert("Dilema zkopírováno. Pošli ho kamarádům!");
+    } catch(e) {
+      alert(message);
+    }
+  }
+}
+
+loadQuestion();
+updateStats();
+</script>
+</body>
+</html>
